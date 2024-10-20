@@ -1,0 +1,55 @@
+START
+
+// Saat halaman terbuka, siapkan tombol dan elemen yang dibutuhkan
+ON PAGE LOAD
+    SET registerButton KE tombol dengan id 'registerBtn'
+    SET signInForm KE form di dalam kotak masuk
+    SET popupSuccess KE kotak pesan dengan id 'popupSuccess'
+    SET popupErrorPassword KE kotak pesan dengan id 'popupErrorPassword'
+    SET popupErrorEmail KE kotak pesan dengan id 'popupErrorEmail'
+
+    // Saat tombol daftar diklik
+    registerButton CLICK EVENT
+        SET password KE nilai dari kolom dengan id 'password'
+        SET confirmPassword KE nilai dari kolom dengan id 'confirmPassword'
+        SET email KE nilai dari kolom dengan id 'email'
+
+        // Cek apakah email benar
+        IF email TIDAK sesuai dengan aturan email THEN
+            TAMPILKAN popupErrorEmail
+            TUNGGU 3 detik
+            SEMBUNYIKAN popupErrorEmail
+        ELSE IF password TIDAK SAMA DENGAN confirmPassword THEN
+            TAMPILKAN popupErrorPassword
+            TUNGGU 3 detik
+            SEMBUNYIKAN popupErrorPassword
+        ELSE
+            TAMPILKAN popupSuccess
+            TUNGGU 3 detik
+            SEMBUNYIKAN popupSuccess
+
+    // Saat form masuk dikirim
+    signInForm SUBMIT EVENT
+        HENTIKAN pengiriman form otomatis
+        SET emailInput KE nilai dari kolom email di form
+        SET passwordInput KE nilai dari kolom password di form
+
+        // Cek apakah email cocok dengan email admin
+        IF emailInput SAMA DENGAN 'arya@gmail.com' THEN
+            PINDAHKAN pengguna ke '/admin'
+        ELSE
+            PINDAHKAN pengguna ke '/'
+
+    // Saat tombol daftar diklik
+    SET signUpButton KE tombol dengan id 'signUp'
+    IF signUpButton ada THEN
+        signUpButton CLICK EVENT
+            TAMBAHKAN class 'right-panel-active' KE container
+
+    // Saat tombol masuk diklik
+    SET signInButton KE tombol dengan id 'signIn'
+    IF signInButton ada THEN
+        signInButton CLICK EVENT
+            HAPUS class 'right-panel-active' DARI container
+
+END
